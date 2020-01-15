@@ -2,7 +2,7 @@
 	"name": "Blacklist",
 	"author": "Fabian Pflug",
 	"description": "Mark articles as read based on words in the title",
-	"version": "0.1",
+	"version": "0.2",
 	"entrypoint": "Blacklist",
 	"type": "system"
 }
