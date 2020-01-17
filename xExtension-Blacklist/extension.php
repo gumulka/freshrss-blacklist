@@ -23,7 +23,7 @@ class BlacklistExtension extends Minz_Extension
      * @return mixed
      */
     public function markRead($entry) {
-        for (FreshRSS_Context::$user_conf->blacklist_words as $blword) {
+        foreach(FreshRSS_Context::$user_conf->blacklist_words as $blword) {
             $pos = strpos($entry->title(), $blword);
             if(! $pos === false) {
                 $entry->_isRead(TRUE);
