@@ -23,10 +23,31 @@ class BlacklistExtension extends Minz_Extension
      * @return mixed
      */
     public function markRead($entry) {
-        $pos = strpos($entry->title(), "heise+ |");
-        if($pos == 0) {
-            $entry->_isRead(TRUE);
+        foreach(FreshRSS_Context::$user_conf->blacklist_words as $blword) {
+            $pos = strpos($entry->title(), $blword);
+            if($pos === false) {} else {
+                $entry->_isRead(TRUE);
+            }
         }
         return $entry;
     }
+
+    /**
+     * Configure this extension with words and safe them to an array.
+     */
+    public function handleConfigureAction() {
+        $this->registerTranslates();
+
+        if (Minz_Request::isPost()) {
+            $blacklist = html_entity_decode(Minz_Request::param('blacklist', ''));
+            FreshRSS_Context::$user_conf->blacklist_words = preg_split("/((\r?\n)|(\r\n?))/", $blacklist);
+            FreshRSS_Context::$user_conf->save();
+        }
+
+        $this->words = '';
+        if (FreshRSS_Context::$user_conf->blacklist_words != '') {
+            $this->words = implode("\n", FreshRSS_Context::$user_conf->blacklist_words);
+        }
+    }
 }
+?>
